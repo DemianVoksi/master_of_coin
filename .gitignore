@@ -1,0 +1,15 @@
+*~
+*#
+*'
+*.txt
+
+scripts/*~
+scripts/*#
+scripts/*'
+scripts/*.txt
+scripts/scraper.py
+scripts/key.py
+scripts/__pycache__/
+
+.git/
+moc/
