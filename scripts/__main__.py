@@ -25,7 +25,7 @@ headers = {
 
 payload = {
     'start': '1',
-    'limit': '200',
+    'limit': '7300',
     'convert': 'USD'
 }
 
