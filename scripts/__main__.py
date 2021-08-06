@@ -1,15 +1,22 @@
+# imports
+
 import requests
 import time
 import key
 
 
+# class
+
 class currency:
-    def __init__(self, datapoints):
+    def __init__(self, datapoints, coinid):
         self.datapoints = datapoints
+        self.coinid = coinid
 
 
-mycoin1 = currency('')
+mycoin1 = currency('', 0)
 
+
+# variables
 
 headers = {
     'X-CMC_PRO_API_KEY': key.apikey,
@@ -23,13 +30,15 @@ payload = {
 }
 
 url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-
 json = requests.get(url, params=payload, headers=headers).json()
 coins = json['data']
 
 
-def which_id():
-    '''Returns the id number of the currency in the Coinmarketcap API'''
+# functions
+
+
+def crypto_list():
+    '''Lists available cryptocurrencies.'''
 
     print("Available cryptocurrencies and their id numbers: BTC = 1")
     print("ETH = 1027, BNB = 1839, XRP = 52, USDT = 825, DOGE = 74")
@@ -41,14 +50,24 @@ def which_id():
     print("CRO = 3635, LUNA = 4172, AAVE = 7278, XTZ = 2011, FTT = 4195")
     print("ATOM = 3794, ALGO = 4030")
 
+
+def which_id():
+    '''Returns the id number of the currency in the Coinmarketcap API'''
+
     idnum = int(input("Enter the id number of the currency: "))
     return idnum
+
+
+def idtoclass():
+    '''Transfers the coin id to a class instance variable'''
+
+    mycoin1.coinid = which_id()
 
 
 def get_coin_data(x):
     '''Iterates through the list of coins with the payload parameters
     and searches for the one with the correct id number given by the x
-    parameter(which_id() function). Returns the coin symbol'''
+    parameter(which_id() function). Returns datapoints'''
 
     points = []
     json = requests.get(url, params=payload, headers=headers).json()
@@ -88,10 +107,14 @@ def get_coin_data(x):
 
 
 def points_to_class():
-    mycoin1.datapoints = get_coin_data(1)
+    '''Transfers coin data from get_coin_data() into a class instance variable.'''
+    mycoin1.datapoints = get_coin_data(mycoin1.coinid)
 
 
 def call_data():
+    '''Calls the data and prints it.'''
+    crypto_list()
+    idtoclass()
     points_to_class()
     print("Coin", "\t", "price", "\t", "\t", "Change 1h", "\t", "Change 24h", "\t", "Change 7d", "\t", "Last updated")
 
