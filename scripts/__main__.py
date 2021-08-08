@@ -25,14 +25,11 @@ headers = {
 
 payload = {
     'start': '1',
-    'limit': '7300',
+    'limit': '5000',
     'convert': 'USD'
 }
 
 url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-json = requests.get(url, params=payload, headers=headers).json()
-coins = json['data']
-
 
 # functions
 
@@ -125,4 +122,5 @@ def call_data():
         time.sleep(60)
 
 
-call_data()
+if __name__ == "__main__":
+    call_data()
