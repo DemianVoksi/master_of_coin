@@ -12,9 +12,13 @@ class currency:
         self.datapoints = datapoints
         self.coinid = coinid
 
+    def new_instance(self):
+        newcurrency = currency()
+        return newcurrency
+
 
 mycoin1 = currency('', 0)
-
+# currencies = []
 
 # variables
 
@@ -53,6 +57,35 @@ def which_id():
 
     idnum = int(input("Enter the id number of the currency: "))
     return idnum
+
+
+def new_coin():
+    while True:
+        answer = str(input("Do you want to add a new coin, 'y' or 'n'? "))
+
+        if answer == 'y':
+            # get coin data (which_id())
+            # make new class instance (newcurrency())
+            # put data into that instance (idtoclass())
+            # put that class instance in a list
+        else:
+            break
+
+
+# def instance_list(ins):
+#     currencies.append(ins)
+
+# def make_instance_name():
+#     '''Makes a name for the new class instance'''
+
+#     name = []
+#     x = f"newcurrency{random.randint(1, 11)}"
+#     name.append(x)
+#     return name[0]
+
+
+# def append_to():
+#     mycoins.append(make_instance_name())
 
 
 def idtoclass():
@@ -106,7 +139,7 @@ def get_coin_data(x):
 def points_to_class():
     '''Transfers coin data from get_coin_data() into a class instance variable.'''
     mycoin1.datapoints = get_coin_data(mycoin1.coinid)
-
+    
 
 def call_data():
     '''Calls the data and prints it.'''
