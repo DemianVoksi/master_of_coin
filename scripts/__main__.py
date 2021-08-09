@@ -12,13 +12,13 @@ class currency:
         self.datapoints = datapoints
         self.coinid = coinid
 
-    def new_instance(self):
-        newcurrency = currency()
-        return newcurrency
+    @classmethod
+    def new_instance(a, b):
+        return currency('', 0)
 
 
 mycoin1 = currency('', 0)
-# currencies = []
+coins = []
 
 # variables
 
@@ -29,7 +29,7 @@ headers = {
 
 payload = {
     'start': '1',
-    'limit': '5000',
+    'limit': '5000', # possible for the user to manually set the limit for lower credit usage
     'convert': 'USD'
 }
 
@@ -60,32 +60,20 @@ def which_id():
 
 
 def new_coin():
+    '''Pulls data of chosen coins, crates class instances and puts the pulled
+    data for each coin into a corresponding instance.'''
+
     while True:
         answer = str(input("Do you want to add a new coin, 'y' or 'n'? "))
 
         if answer == 'y':
-            # get coin data (which_id())
-            # make new class instance (newcurrency())
-            # put data into that instance (idtoclass())
-            # put that class instance in a list
-        else:
+            idtoclass() # gets the coin ID and puts it into mycoin1.coinid
+            points_to_class() # gets the coin data and puts it into mycoin1.datapoints
+            coins.append(currency.new_instance(1)) # make new class instance new_instance(1) and puts that class instance in a list
+            coins[-1].datapoints = mycoin1.datapoints # gives mycoin1 datapoints to last instance
+            coins[-1].coinid = mycoin1.coinid # gives mycoin1 coinid to last instance
+        elif answer == 'n':
             break
-
-
-# def instance_list(ins):
-#     currencies.append(ins)
-
-# def make_instance_name():
-#     '''Makes a name for the new class instance'''
-
-#     name = []
-#     x = f"newcurrency{random.randint(1, 11)}"
-#     name.append(x)
-#     return name[0]
-
-
-# def append_to():
-#     mycoins.append(make_instance_name())
 
 
 def idtoclass():
@@ -139,21 +127,23 @@ def get_coin_data(x):
 def points_to_class():
     '''Transfers coin data from get_coin_data() into a class instance variable.'''
     mycoin1.datapoints = get_coin_data(mycoin1.coinid)
-    
 
-def call_data():
+
+def call_data(myco):
     '''Calls the data and prints it.'''
+
     crypto_list()
-    idtoclass()
-    points_to_class()
+    new_coin()
     print("Coin", "\t", "price", "\t", "\t", "Change 1h", "\t", "Change 24h", "\t", "Change 7d", "\t", "Last updated")
 
     while True:
-        mycoin1.datapoints.clear()
-        points_to_class()
-        print(mycoin1.datapoints[0], '\t', mycoin1.datapoints[1], '\t', mycoin1.datapoints[2], '\t', mycoin1.datapoints[3], '\t', mycoin1.datapoints[4], '\t', mycoin1.datapoints[5])
+        for coin in myco:
+            print(coin.datapoints[0], '\t', coin.datapoints[1], '\t', coin.datapoints[2], '\t', coin.datapoints[3], '\t', coin.datapoints[4], '\t', coin.datapoints[5])
+            coin.datapoints.clear()
+            coin.datapoints = get_coin_data(coin.coinid)
         time.sleep(60)
+        print('\n')
 
 
 if __name__ == "__main__":
-    call_data()
+    call_data(coins)
