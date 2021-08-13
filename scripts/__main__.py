@@ -29,7 +29,7 @@ headers = {
 
 payload = {
     'start': '1',
-    'limit': '5000', # possible for the user to manually set the limit for lower credit usage
+    'limit': '', # possible for the user to manually set the limit for lower credit usage
     'convert': 'USD'
 }
 
@@ -50,6 +50,24 @@ def crypto_list():
     print("BSV = 3602, XMR = 328, MIOTA = 1720, BUSD = 4687, BTT = 3718")
     print("CRO = 3635, LUNA = 4172, AAVE = 7278, XTZ = 2011, FTT = 4195")
     print("ATOM = 3794, ALGO = 4030")
+
+
+def set_payload_limit():
+    '''Gives the user the chance to set the payload limit for the API call.'''
+
+    question = str(input("Do you want to set a payload limit? If not, the limit will automatically be set to 5000. 'y' or 'n': "))
+    if question == 'y':
+        limit = str(input("Set your payload limit: "))
+        return limit
+    elif question == 'n':
+        limit = '5000'
+        return limit
+
+
+def transfer_payload():
+    '''Transfers chosen payload limit to its dictionary value.'''
+
+    payload['limit'] = set_payload_limit()
 
 
 def which_id():
@@ -132,6 +150,7 @@ def points_to_class():
 def call_data(myco):
     '''Calls the data and prints it.'''
 
+    transfer_payload()
     crypto_list()
     new_coin()
     print("Coin", "\t", "price", "\t", "\t", "Change 1h", "\t", "Change 24h", "\t", "Change 7d", "\t", "Last updated")
