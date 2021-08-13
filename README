@@ -1,12 +1,15 @@
-This is a short script for getting the current details for your cryptocurrency of choice in the terminal.
+This is a short script for getting the current details for your cryptocurrencies of choice in the terminal.
 
 You will need a Coinmarketcap API key to use this script. It is free to make,
 but you will have a usage cap. Free tier monthly cap is 10 000 credits.
 Since Coinmarketcap parses the data for the cryptocurrencies based on their ID number,
 coins with a higher ID number (which goes into the thousands) use more calls to the API.
 Therefore it is easier to meet the cap if you are checking those coins.
-Right now with the payload limit set to 5000, the number of credits used per call is 25. 
-Therefore, keep an eye on your cap usage!
+I implemented a payload limit chooser which means you can manually set the payload for the API call: that is useful if
+you know that you will track coins with a lower ID number- no need for the program to parse through a bunch of unneeded ID's.
+If you choose not to enter the payload limit, it is automatically set to 5000,
+and the number of credits used per call per coin is 25. 
+Keep an eye on your cap usage!
 
 To use the script, go into the key.py file and enter your key there.
 Enjoy!

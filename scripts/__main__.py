@@ -29,7 +29,7 @@ headers = {
 
 payload = {
     'start': '1',
-    'limit': '', # possible for the user to manually set the limit for lower credit usage
+    'limit': '',
     'convert': 'USD'
 }
 
