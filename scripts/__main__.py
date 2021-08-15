@@ -39,10 +39,11 @@ url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
 
 
 def crypto_list():
-    '''Lists available cryptocurrencies.'''
+    '''Lists available cryptocurrencies.
+    Gets called by call_data().'''
 
-    print("Available cryptocurrencies and their id numbers: BTC = 1")
-    print("ETH = 1027, BNB = 1839, XRP = 52, USDT = 825, DOGE = 74")
+    print("Available cryptocurrencies and their id numbers: ")
+    print("BTC = 1, ETH = 1027, BNB = 1839, XRP = 52, USDT = 825, DOGE = 74")
     print("ADA = 2010, DOT = 6636, LTC = 2, BCH = 1831, UNI = 7083")
     print("LINK = 1975, VET = 3077, XLM = 512, THETA = 2416")
     print("USDC = 3408, FIL = 2280, TRX = 1958, WBTC = 3717")
@@ -53,7 +54,9 @@ def crypto_list():
 
 
 def set_payload_limit():
-    '''Gives the user the chance to set the payload limit for the API call.'''
+    '''Gives the user the chance to set the payload limit for the API call.
+    If they don't the default payload value is 5000.
+    Called by transfer_payload()'''
 
     question = str(input("Do you want to set a payload limit? If not, the limit will automatically be set to 5000. 'y' or 'n': "))
     if question == 'y':
@@ -65,13 +68,16 @@ def set_payload_limit():
 
 
 def transfer_payload():
-    '''Transfers chosen payload limit to its dictionary value.'''
+    '''Transfers chosen payload limit to its dictionary value.
+    Calls on set_payload_limit().
+    Gets called by call_data().'''
 
     payload['limit'] = set_payload_limit()
 
 
 def which_id():
-    '''Returns the id number of the currency in the Coinmarketcap API'''
+    '''Returns the id number of the currency in the Coinmarketcap API.
+    Gets called by idtoclass()'''
 
     idnum = int(input("Enter the id number of the currency: "))
     return idnum
@@ -79,7 +85,9 @@ def which_id():
 
 def new_coin():
     '''Pulls data of chosen coins, crates class instances and puts the pulled
-    data for each coin into a corresponding instance.'''
+    data for each coin into a corresponding instance.
+    Calls on idtoclass() and points_to_class().
+    Gets called by call_data().'''
 
     while True:
         answer = str(input("Do you want to add a new coin, 'y' or 'n'? "))
@@ -95,7 +103,9 @@ def new_coin():
 
 
 def idtoclass():
-    '''Transfers the coin id to a class instance variable'''
+    '''Transfers the coin id to a class instance variable.
+    Calls on which_id().
+    Gets called by new_coin()'''
 
     mycoin1.coinid = which_id()
 
@@ -103,7 +113,8 @@ def idtoclass():
 def get_coin_data(x):
     '''Iterates through the list of coins with the payload parameters
     and searches for the one with the correct id number given by the x
-    parameter(which_id() function). Returns datapoints'''
+    parameter(which_id() function). Returns datapoints.
+    Gets called by points_to_class() and call_data().'''
 
     points = []
     json = requests.get(url, params=payload, headers=headers).json()
@@ -143,12 +154,16 @@ def get_coin_data(x):
 
 
 def points_to_class():
-    '''Transfers coin data from get_coin_data() into a class instance variable.'''
+    '''Transfers coin data from get_coin_data() into a class instance variable.
+    Calls on get_coin_data().
+    Gets called by new_coin()'''
+
     mycoin1.datapoints = get_coin_data(mycoin1.coinid)
 
 
-def call_data(myco):
-    '''Calls the data and prints it.'''
+def call_data(processed_coins):
+    '''Calls the data and prints it.
+    Calls on transfer_payload(), crypto_list(), new_coin() and get_coin_data().'''
 
     transfer_payload()
     crypto_list()
@@ -156,7 +171,7 @@ def call_data(myco):
     print("Coin", "\t", "price", "\t", "\t", "Change 1h", "\t", "Change 24h", "\t", "Change 7d", "\t", "Last updated")
 
     while True:
-        for coin in myco:
+        for coin in processed_coins:
             print(coin.datapoints[0], '\t', coin.datapoints[1], '\t', coin.datapoints[2], '\t', coin.datapoints[3], '\t', coin.datapoints[4], '\t', coin.datapoints[5])
             coin.datapoints.clear()
             coin.datapoints = get_coin_data(coin.coinid)
