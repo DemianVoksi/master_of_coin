@@ -8,16 +8,17 @@ import key
 # class
 
 class currency:
-    def __init__(self, datapoints, coinid):
+    def __init__(self, datapoints, coinid, ticker):
         self.datapoints = datapoints
         self.coinid = coinid
+        self.ticker = ticker
 
     @classmethod
     def new_instance(a, b):
-        return currency('', 0)
+        return currency('', 0, '')
 
 
-mycoin1 = currency('', 0)
+mycoin1 = currency('', 0, '')
 coins = []
 
 # variables
@@ -172,6 +173,7 @@ def call_data(processed_coins):
 
     while True:
         for coin in processed_coins:
+            coin.ticker = coin.datapoints[0]
             print(coin.datapoints[0], '\t', coin.datapoints[1], '\t', coin.datapoints[2], '\t', coin.datapoints[3], '\t', coin.datapoints[4], '\t', coin.datapoints[5])
             coin.datapoints.clear()
             coin.datapoints = get_coin_data(coin.coinid)
